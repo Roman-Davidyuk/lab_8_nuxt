@@ -125,7 +125,7 @@ const people = [
         role: "Owner",
     },
     {
-        id: 14,
+        id: 1,
         name: "Jane Smith",
         title: "Senior Designer",
         email: "",
