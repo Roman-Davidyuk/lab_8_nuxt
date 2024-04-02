@@ -1,5 +1,6 @@
 <template>
     <div>
+        <title>Products List</title>
         <div
             class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700"
         >
@@ -16,7 +17,13 @@
         >
             <UInput v-model="q" placeholder="Фільтр" />
         </div>
-        <UTable :columns="selectedColumns" v-model="selected" :rows="rows">
+        <UTable
+            :columns="selectedColumns"
+            v-model="selected"
+            :rows="rows"
+            v-model:sort="sort"
+            sort-mode="manual"
+        >
             <template #rating-data="{ row }">
                 <span :style="{ color: row.rating > 4.5 ? 'green' : 'red' }">
                     {{ row.rating }}
@@ -101,12 +108,31 @@ const q = ref("");
 const page = ref(1);
 const pageCount = 5;
 
-const filteredPeople = computed(() => {
-    if (!q.value) {
-        return products;
+const sort = ref({ column: "title", direction: "asc" as const });
+
+const sortedRows = computed(() => {
+    const sortedProducts = [...products];
+    const { column, direction } = sort.value;
+
+    if (column && direction) {
+        sortedProducts.sort((a, b) => {
+            const aValue = a[column];
+            const bValue = b[column];
+            if (aValue < bValue) return direction === "asc" ? -1 : 1;
+            if (aValue > bValue) return direction === "asc" ? 1 : -1;
+            return 0;
+        });
     }
 
-    return products.filter((product) => {
+    return sortedProducts;
+});
+
+const filteredPeople = computed(() => {
+    if (!q.value) {
+        return sortedRows.value;
+    }
+    page.value = 1;
+    return sortedRows.value.filter((product) => {
         return Object.values(product).some((value) => {
             return String(value).toLowerCase().includes(q.value.toLowerCase());
         });
