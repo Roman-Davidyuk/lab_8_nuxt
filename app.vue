@@ -11,19 +11,10 @@
                                 <NuxtLink to="/">Home</NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink to="/Student"
-                                    >List Of Students</NuxtLink
-                                >
-                            </li>
-                            <li>
                                 <NuxtLink to="/products"
                                     >List Of Products</NuxtLink
                                 >
                             </li>
-                            <li>
-                                <NuxtLink to="/diagram">diagram</NuxtLink>
-                            </li>
-                            <li></li>
                         </ul>
                     </div>
                 </nav>
